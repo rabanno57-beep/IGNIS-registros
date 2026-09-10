@@ -560,37 +560,6 @@
       transform: translateY(0);
     }
 
-    /* DOCUMENTACIÓN LOCAL */
-    .info-section {
-      background: #ffffff;
-      border: 1px solid var(--slate-200);
-      border-radius: 16px;
-      padding: 24px;
-      margin-top: 40px;
-    }
-    .info-section h4 {
-      font-size: 1.05rem;
-      color: var(--slate-900);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .info-section p {
-      font-size: 0.9rem;
-      color: var(--slate-600);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .code-pill {
-      background: var(--slate-100);
-      color: var(--slate-800);
-      font-family: 'JetBrains Mono', monospace;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.85em;
-    }
-
     /* FOOTER */
     .footer {
       text-align: center;
@@ -606,7 +575,7 @@
         color: #000000 !important;
         padding: 0 !important;
       }
-      .navbar, .hero, .control-panel, .card-actions, .info-section, .custom-generator-box, .footer, .toast {
+      .navbar, .hero, .control-panel, .card-actions, .custom-generator-box, .footer, .toast {
         display: none !important;
       }
       .section-title-wrap {
@@ -699,7 +668,7 @@
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
-          Descargar Todos los QR
+          Descargar Todos (JPG)
         </button>
       </div>
     </div>
@@ -746,14 +715,12 @@
         </svg>
         <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre o rol..." oninput="filterMembers()">
       </div>
-      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-        <span style="font-size: 0.8rem; font-weight: 700; color: var(--slate-700);">Descargar en:</span>
-        <div class="format-pills">
-          <button type="button" class="format-pill active" data-format="png" onclick="setGlobalFormat('png')">PNG (Recomendado)</button>
-          <button type="button" class="format-pill" data-format="jpg" onclick="setGlobalFormat('jpg')">JPG</button>
-          <button type="button" class="format-pill" data-format="svg" onclick="setGlobalFormat('svg')">SVG</button>
-        </div>
-      </div>
+      <span style="font-size: 0.82rem; color: var(--slate-500); display: flex; align-items: center; gap: 6px;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        Descargas listas en imagen JPG para celular o impresión
+      </span>
     </div>
   </div>
 
@@ -781,23 +748,11 @@
             <input type="text" id="customInputTitle" class="form-control" placeholder="Ej: qr-mi-enlace" value="qr-ignis">
           </div>
           <div style="display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap;">
-            <button class="btn btn-success" onclick="downloadCustomQR('png')">
+            <button class="btn btn-primary" onclick="downloadCustomQR()">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
               </svg>
-              Descargar PNG (Recomendado)
-            </button>
-            <button class="btn btn-outline" onclick="downloadCustomQR('jpg')">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-              Descargar JPG
-            </button>
-            <button class="btn btn-outline" onclick="downloadCustomQR('svg')">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-              </svg>
-              Descargar SVG
+              Descargar en JPG
             </button>
           </div>
         </div>
@@ -817,24 +772,6 @@
     <div class="members-grid" id="membersGrid">
       <!-- Se inyecta dinámicamente mediante JavaScript -->
     </div>
-
-    <!-- DOCUMENTACIÓN / AYUDA LOCAL -->
-    <section class="info-section">
-      <h4>
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        ¿Cómo generar los archivos QR en tu computadora? (Offline)
-      </h4>
-      <p>
-        Si deseas regenerar físicamente los archivos <span class="code-pill">qrs/qr-*.svg</span> en tu repositorio local:
-      </p>
-      <ul style="margin-left: 24px; font-size: 0.88rem; color: var(--slate-600); line-height: 1.8;">
-        <li><strong>En Mac:</strong> Abre la terminal y ejecuta <span class="code-pill">python3 generar_qr.py</span> o haz doble clic a <span class="code-pill">actualizar_qrs.command</span>.</li>
-        <li><strong>En Windows:</strong> Haz doble clic a <span class="code-pill">actualizar_qrs.bat</span>.</li>
-        <li><strong>Con otra URL personalizada:</strong> Ejecuta <span class="code-pill">python3 generar_qr.py "https://ignis-registros.vercel.app"</span></li>
-      </ul>
-    </section>
 
     <footer class="footer">
       <p>© IGNIS - Proyecto Escolar • Registros Digitales y Códigos QR</p>
@@ -1334,14 +1271,11 @@
               </svg>
               Ver Perfil
             </a>
-            <button class="btn btn-success btn-sm" onclick="downloadMemberQR('${member.id}', '${member.file.replace('.html', '')}', 'png')" title="Descargar código QR en imagen PNG (Alta resolución)">
+            <button class="btn btn-outline btn-sm" onclick="downloadMemberQR('${member.id}', '${member.file.replace('.html', '')}')" title="Descargar código QR en formato JPG">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
               </svg>
-              PNG
-            </button>
-            <button class="btn btn-outline btn-sm" onclick="downloadMemberQR('${member.id}', '${member.file.replace('.html', '')}', 'svg')" title="Descargar código QR en vector SVG">
-              SVG
+              Descargar JPG
             </button>
             <button class="btn btn-outline btn-sm btn-icon-action" onclick="copyToClipboard('${targetUrl}')" title="Copiar enlace completo">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1355,16 +1289,6 @@
       });
 
       document.getElementById('membersCountBadge').textContent = `${TEAM_MEMBERS.length} Integrantes`;
-    }
-
-    let selectedFormat = 'png';
-
-    function setGlobalFormat(format) {
-      selectedFormat = format;
-      document.querySelectorAll('.format-pill').forEach(pill => {
-        pill.classList.toggle('active', pill.dataset.format === format);
-      });
-      showToast(`Formato predeterminado: ${format.toUpperCase()}`);
     }
 
     function updateAllTeamQRs() {
@@ -1387,19 +1311,13 @@
       document.getElementById('membersCountBadge').textContent = `${visibleCount} Integrantes`;
     }
 
-    function downloadMemberQR(memberId, filename, format = null) {
-      const fmt = format || selectedFormat;
+    function downloadMemberQR(memberId, filename) {
       const svg = memberSvgCache[memberId];
       if (!svg) return;
-      if (fmt === 'svg') {
-        downloadBlob(svg, `qr-${filename}.svg`, 'image/svg+xml');
-        showToast(`Descargado qr-${filename}.svg`);
-      } else {
-        exportSvgAsImage(svg, fmt, 1000, `qr-${filename}`);
-      }
+      exportSvgAsJpg(svg, 1000, `qr-${filename}`);
     }
 
-    function exportSvgAsImage(svgString, format, size = 1000, filename = 'codigo-qr') {
+    function exportSvgAsJpg(svgString, size = 1000, filename = 'codigo-qr') {
       const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
       const url = URL.createObjectURL(svgBlob);
       const img = new Image();
@@ -1414,46 +1332,29 @@
         ctx.drawImage(img, 0, 0, size, size);
         URL.revokeObjectURL(url);
         
-        const isJpg = format === 'jpg' || format === 'jpeg';
-        const mimeType = isJpg ? 'image/jpeg' : 'image/png';
-        const ext = isJpg ? 'jpg' : 'png';
-        
         canvas.toBlob(blob => {
           if (!blob) return;
           const imgUrl = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = imgUrl;
-          a.download = `${filename}.${ext}`;
+          a.download = `${filename}.jpg`;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
           URL.revokeObjectURL(imgUrl);
-          showToast(`Descargado: ${filename}.${ext}`);
-        }, mimeType, 0.98);
+          showToast(`Descargado: ${filename}.jpg`);
+        }, 'image/jpeg', 0.98);
       };
       img.src = url;
     }
 
-    function downloadBlob(content, filename, type) {
-      const blob = new Blob([content], { type });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
     function downloadAllQRs() {
-      const fmt = selectedFormat;
       TEAM_MEMBERS.forEach((member, index) => {
         setTimeout(() => {
-          downloadMemberQR(member.id, member.file.replace('.html', ''), fmt);
+          downloadMemberQR(member.id, member.file.replace('.html', ''));
         }, index * 250);
       });
-      showToast(`Descargando los 10 códigos QR en formato ${fmt.toUpperCase()}...`);
+      showToast('Descargando los 10 códigos QR en formato JPG...');
     }
 
     function copyToClipboard(text) {
@@ -1506,15 +1407,10 @@
       }
     }
 
-    function downloadCustomQR(format) {
+    function downloadCustomQR() {
       const title = (document.getElementById('customInputTitle').value.trim() || 'codigo-qr').replace(/\s+/g, '-').toLowerCase();
       if (!currentCustomSvg) return;
-      if (format === 'svg') {
-        downloadBlob(currentCustomSvg, `${title}.svg`, 'image/svg+xml');
-        showToast(`Descargado: ${title}.svg`);
-      } else {
-        exportSvgAsImage(currentCustomSvg, format, 1000, title);
-      }
+      exportSvgAsJpg(currentCustomSvg, 1000, title);
     }
 
     // Inicializar al cargar
