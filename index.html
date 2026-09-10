@@ -139,6 +139,42 @@
       padding: 6px 14px;
       font-size: 0.8rem;
     }
+    .btn-success {
+      background-color: var(--success);
+      color: #ffffff;
+      border-color: var(--success);
+    }
+    .btn-success:hover {
+      background-color: #15803d;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+      transform: translateY(-1px);
+    }
+    .format-pills {
+      display: inline-flex;
+      align-items: center;
+      background: var(--slate-100);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 3px;
+      border: 1px solid var(--slate-200);
+    }
+    .format-pill {
+      font-family: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      border: none;
+      background: transparent;
+      color: var(--slate-600);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .format-pill.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
     .btn-icon-only {
       padding: 7px;
       border-radius: 8px;
@@ -710,9 +746,14 @@
         </svg>
         <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre o rol..." oninput="filterMembers()">
       </div>
-      <span style="font-size: 0.82rem; color: var(--slate-500);">
-        💡 Puedes cambiar la URL base en cualquier momento para generar nuevos QRs dinámicos.
-      </span>
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--slate-700);">Descargar en:</span>
+        <div class="format-pills">
+          <button type="button" class="format-pill active" data-format="png" onclick="setGlobalFormat('png')">PNG (Recomendado)</button>
+          <button type="button" class="format-pill" data-format="jpg" onclick="setGlobalFormat('jpg')">JPG</button>
+          <button type="button" class="format-pill" data-format="svg" onclick="setGlobalFormat('svg')">SVG</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -740,17 +781,23 @@
             <input type="text" id="customInputTitle" class="form-control" placeholder="Ej: qr-mi-enlace" value="qr-ignis">
           </div>
           <div style="display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap;">
-            <button class="btn btn-primary" onclick="downloadCustomQR('svg')">
+            <button class="btn btn-success" onclick="downloadCustomQR('png')">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
               </svg>
-              Descargar en SVG
+              Descargar PNG (Recomendado)
             </button>
-            <button class="btn btn-outline" onclick="downloadCustomQR('png')">
+            <button class="btn btn-outline" onclick="downloadCustomQR('jpg')">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
               </svg>
-              Descargar en PNG
+              Descargar JPG
+            </button>
+            <button class="btn btn-outline" onclick="downloadCustomQR('svg')">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+              </svg>
+              Descargar SVG
             </button>
           </div>
         </div>
@@ -1287,11 +1334,14 @@
               </svg>
               Ver Perfil
             </a>
-            <button class="btn btn-outline btn-sm" onclick="downloadMemberQR('${member.id}', '${member.file.replace('.html', '')}')" title="Descargar SVG del código QR">
+            <button class="btn btn-success btn-sm" onclick="downloadMemberQR('${member.id}', '${member.file.replace('.html', '')}', 'png')" title="Descargar código QR en imagen PNG (Alta resolución)">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
               </svg>
-              Descargar
+              PNG
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="downloadMemberQR('${member.id}', '${member.file.replace('.html', '')}', 'svg')" title="Descargar código QR en vector SVG">
+              SVG
             </button>
             <button class="btn btn-outline btn-sm btn-icon-action" onclick="copyToClipboard('${targetUrl}')" title="Copiar enlace completo">
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -1305,6 +1355,16 @@
       });
 
       document.getElementById('membersCountBadge').textContent = `${TEAM_MEMBERS.length} Integrantes`;
+    }
+
+    let selectedFormat = 'png';
+
+    function setGlobalFormat(format) {
+      selectedFormat = format;
+      document.querySelectorAll('.format-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.dataset.format === format);
+      });
+      showToast(`Formato predeterminado: ${format.toUpperCase()}`);
     }
 
     function updateAllTeamQRs() {
@@ -1327,11 +1387,51 @@
       document.getElementById('membersCountBadge').textContent = `${visibleCount} Integrantes`;
     }
 
-    function downloadMemberQR(memberId, filename) {
+    function downloadMemberQR(memberId, filename, format = null) {
+      const fmt = format || selectedFormat;
       const svg = memberSvgCache[memberId];
       if (!svg) return;
-      downloadBlob(svg, `qr-${filename}.svg`, 'image/svg+xml');
-      showToast(`Descargando qr-${filename}.svg`);
+      if (fmt === 'svg') {
+        downloadBlob(svg, `qr-${filename}.svg`, 'image/svg+xml');
+        showToast(`Descargado qr-${filename}.svg`);
+      } else {
+        exportSvgAsImage(svg, fmt, 1000, `qr-${filename}`);
+      }
+    }
+
+    function exportSvgAsImage(svgString, format, size = 1000, filename = 'codigo-qr') {
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, size, size);
+        ctx.drawImage(img, 0, 0, size, size);
+        URL.revokeObjectURL(url);
+        
+        const isJpg = format === 'jpg' || format === 'jpeg';
+        const mimeType = isJpg ? 'image/jpeg' : 'image/png';
+        const ext = isJpg ? 'jpg' : 'png';
+        
+        canvas.toBlob(blob => {
+          if (!blob) return;
+          const imgUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = imgUrl;
+          a.download = `${filename}.${ext}`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(imgUrl);
+          showToast(`Descargado: ${filename}.${ext}`);
+        }, mimeType, 0.98);
+      };
+      img.src = url;
     }
 
     function downloadBlob(content, filename, type) {
@@ -1347,12 +1447,13 @@
     }
 
     function downloadAllQRs() {
+      const fmt = selectedFormat;
       TEAM_MEMBERS.forEach((member, index) => {
         setTimeout(() => {
-          downloadMemberQR(member.id, member.file.replace('.html', ''));
-        }, index * 200);
+          downloadMemberQR(member.id, member.file.replace('.html', ''), fmt);
+        }, index * 250);
       });
-      showToast('Descargando los 10 códigos QR del equipo...');
+      showToast(`Descargando los 10 códigos QR en formato ${fmt.toUpperCase()}...`);
     }
 
     function copyToClipboard(text) {
@@ -1407,33 +1508,12 @@
 
     function downloadCustomQR(format) {
       const title = (document.getElementById('customInputTitle').value.trim() || 'codigo-qr').replace(/\s+/g, '-').toLowerCase();
+      if (!currentCustomSvg) return;
       if (format === 'svg') {
         downloadBlob(currentCustomSvg, `${title}.svg`, 'image/svg+xml');
         showToast(`Descargado: ${title}.svg`);
       } else {
-        const svgBlob = new Blob([currentCustomSvg], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
-        const img = new Image();
-        img.onload = function() {
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width || 400;
-          canvas.height = img.height || 400;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0);
-          URL.revokeObjectURL(url);
-          canvas.toBlob(blob => {
-            const pngUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = pngUrl;
-            a.download = `${title}.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(pngUrl);
-            showToast(`Descargado: ${title}.png`);
-          });
-        };
-        img.src = url;
+        exportSvgAsImage(currentCustomSvg, format, 1000, title);
       }
     }
 

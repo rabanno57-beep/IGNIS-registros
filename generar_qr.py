@@ -317,6 +317,34 @@ def qr_to_svg(grid, border=4, scale=10):
 </svg>'''
     return svg
 
+def grid_to_png(grid, border=4, scale=14, fg=(15, 23, 42), bg=(255, 255, 255)):
+    import zlib
+    import struct
+    size = len(grid)
+    width = (size + border * 2) * scale
+    height = width
+    raw_data = bytearray()
+    for y in range(height):
+        raw_data.append(0)
+        grid_y = y // scale - border
+        for x in range(width):
+            grid_x = x // scale - border
+            if 0 <= grid_y < size and 0 <= grid_x < size and grid[grid_y][grid_x] == 1:
+                raw_data.extend(fg)
+            else:
+                raw_data.extend(bg)
+    png = bytearray(b'\x89PNG\r\n\x1a\n')
+    def write_chunk(ctype, data):
+        png.extend(struct.pack('>I', len(data)))
+        png.extend(ctype)
+        png.extend(data)
+        crc = zlib.crc32(ctype + data) & 0xffffffff
+        png.extend(struct.pack('>I', crc))
+    write_chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 2, 0, 0, 0))
+    write_chunk(b'IDAT', zlib.compress(raw_data, 6))
+    write_chunk(b'IEND', b'')
+    return bytes(png)
+
 # ============================================================
 # CONFIGURACIÓN: URL BASE DE TU PROYECTO PUBLICADO
 # Puedes cambiar este enlace aquí mismo, o escribirlo cuando
@@ -349,18 +377,27 @@ if __name__ == '__main__':
     os.makedirs("qrs", exist_ok=True)
     
     integrantes = ["denisse", "mildred", "axel", "jacobo", "diego", "ximena", "dereck", "alexa", "jorge", "santiago"]
-    print(f"\nGenerando códigos QR con la ruta: {base_url}\n")
+    print(f"\nGenerando códigos QR (SVG y PNG) con la ruta: {base_url}\n")
     
     for nombre in integrantes:
         url = f"{base_url}/{nombre}.html"
         grid = create_qr(url, 'M')
-        svg = qr_to_svg(grid, border=4, scale=12)
-        filepath = os.path.join("qrs", f"qr-{nombre}.svg")
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(svg)
-        print(f"  [OK] {filepath} -> {url}")
         
-    print("\n¡Listo! Todos los códigos QR fueron actualizados exitosamente en la carpeta qrs/.")
-    print("Puedes abrir el archivo qrs.html para verlos o imprimirlos.\n")
+        # Guardar SVG
+        svg = qr_to_svg(grid, border=4, scale=12)
+        svg_filepath = os.path.join("qrs", f"qr-{nombre}.svg")
+        with open(svg_filepath, "w", encoding="utf-8") as f:
+            f.write(svg)
+            
+        # Guardar PNG (alta resolución, ideal para celulares e impresión)
+        png_bytes = grid_to_png(grid, border=4, scale=14)
+        png_filepath = os.path.join("qrs", f"qr-{nombre}.png")
+        with open(png_filepath, "wb") as f:
+            f.write(png_bytes)
+            
+        print(f"  [OK] SVG y PNG: {nombre} -> {url}")
+        
+    print("\n¡Listo! Todos los códigos QR en SVG y PNG fueron actualizados exitosamente en la carpeta qrs/.")
+    print("Puedes abrir el archivo index.html para verlos o descargarlos.\n")
 
 
