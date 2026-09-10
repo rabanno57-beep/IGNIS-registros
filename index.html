@@ -764,7 +764,7 @@
     <!-- LISTA DEL EQUIPO -->
     <div class="section-title-wrap">
       <h3>Integrantes del Equipo IGNIS</h3>
-      <span class="count-badge" id="membersCountBadge">9 Integrantes</span>
+      <span class="count-badge" id="membersCountBadge">10 Integrantes</span>
     </div>
 
     <div class="members-grid" id="membersGrid">
@@ -870,6 +870,13 @@
         role: 'CEO',
         file: 'jorge.html',
         image: 'images/jorge.svg'
+      },
+      {
+        id: 'santiago',
+        name: 'Santiago Gonzalez Ocaña',
+        role: 'Programador',
+        file: 'santiago.html',
+        image: 'images/santiago.svg'
       }
     ];
 
@@ -1345,7 +1352,7 @@
           downloadMemberQR(member.id, member.file.replace('.html', ''));
         }, index * 200);
       });
-      showToast('Descargando los 9 códigos QR del equipo...');
+      showToast('Descargando los 10 códigos QR del equipo...');
     }
 
     function copyToClipboard(text) {
