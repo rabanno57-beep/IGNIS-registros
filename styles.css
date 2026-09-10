@@ -30,6 +30,27 @@ body {
   margin: auto;
 }
 
+.back-link-wrapper {
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.back-link:hover {
+  color: #2563eb;
+  transform: translateX(-3px);
+}
+
 .card {
   background-color: #ffffff;
   border-radius: 20px;

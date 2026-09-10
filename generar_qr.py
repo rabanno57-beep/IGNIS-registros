@@ -322,7 +322,7 @@ def qr_to_svg(grid, border=4, scale=10):
 # Puedes cambiar este enlace aquí mismo, o escribirlo cuando
 # ejecutes este programa.
 # ============================================================
-URL_BASE_POR_DEFECTO = "https://rabanno57-beep.github.io/IGNIS-registros"
+URL_BASE_POR_DEFECTO = "https://ignis-registros.vercel.app"
 
 if __name__ == '__main__':
     import os

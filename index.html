@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IGNIS - Portal de Registros y Códigos QR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-border: #bfdbfe;
+      --ignis-orange: #ea580c;
+      --ignis-bg: #fff7ed;
+      --ignis-border: #ffedd5;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --success: #16a34a;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      --card-shadow-hover: 0 20px 30px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: var(--slate-700);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* BARRA SUPERIOR / NAVBAR */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--slate-200);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--slate-900);
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ea580c, #f97316);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 10px rgba(234, 88, 12, 0.25);
+    }
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .brand-text p {
+      font-size: 0.75rem;
+      color: var(--slate-500);
+      font-weight: 500;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* BOTONES */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transform: translateY(-1px);
+    }
+    .btn-outline {
+      background-color: #ffffff;
+      color: var(--slate-700);
+      border-color: var(--slate-200);
+    }
+    .btn-outline:hover {
+      background-color: var(--slate-100);
+      border-color: var(--slate-300);
+      color: var(--slate-900);
+    }
+    .btn-sm {
+      padding: 6px 14px;
+      font-size: 0.8rem;
+    }
+    .btn-icon-only {
+      padding: 7px;
+      border-radius: 8px;
+    }
+
+    /* SECCIÓN HERO */
+    .hero {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border-bottom: 1px solid var(--slate-200);
+      padding: 40px 20px 28px;
+      text-align: center;
+    }
+    .hero-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--ignis-bg);
+      color: var(--ignis-orange);
+      border: 1px solid var(--ignis-border);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+    }
+    .hero h2 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      letter-spacing: -0.8px;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .hero p {
+      font-size: 1.02rem;
+      color: var(--slate-600);
+      line-height: 1.6;
+    }
+
+    /* BARRA DE CONFIGURACIÓN DE URL */
+    .control-panel {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      padding: 18px 22px;
+      max-width: 1000px;
+      margin: -20px auto 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .url-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .url-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--slate-700);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .url-input-wrap {
+      flex: 1;
+      min-width: 260px;
+      display: flex;
+      align-items: center;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 10px;
+      padding: 0 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .url-input-wrap:focus-within {
+      border-color: var(--primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .url-input {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 10px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      color: var(--slate-900);
+      outline: none;
+    }
+    .actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--slate-100);
+      padding-top: 12px;
+    }
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      padding: 6px 12px;
+      min-width: 250px;
+    }
+    .search-input {
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: var(--slate-800);
+      outline: none;
+      width: 100%;
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* GENERADOR PERSONALIZADO */
+    .custom-generator-box {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 36px;
+      box-shadow: var(--card-shadow);
+      display: none;
+    }
+    .custom-generator-box.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .generator-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--slate-100);
+      padding-bottom: 12px;
+    }
+    .generator-header h3 {
+      font-size: 1.15rem;
+      color: var(--slate-900);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .generator-body {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .generator-body {
+        grid-template-columns: 1fr;
+      }
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--slate-700);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--slate-800);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .custom-qr-preview {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .custom-qr-preview svg {
+      width: 180px;
+      height: 180px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* GRID DE MIEMBROS */
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .section-title-wrap h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      letter-spacing: -0.4px;
+    }
+    .count-badge {
+      background: var(--slate-200);
+      color: var(--slate-700);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    /* TARJETA DE MIEMBRO */
+    .member-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid var(--slate-200);
+      box-shadow: var(--card-shadow);
+      padding: 24px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .member-card:hover {
+      box-shadow: var(--card-shadow-hover);
+      transform: translateY(-4px);
+      border-color: var(--slate-300);
+    }
+    .member-avatar-wrap {
+      margin-bottom: 12px;
+    }
+    .member-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      background-color: var(--slate-100);
+    }
+    .member-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .member-role {
+      display: inline-block;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid var(--primary-border);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 0.3px;
+    }
+
+    /* CONTENEDOR DEL CÓDIGO QR */
+    .qr-box {
+      width: 200px;
+      height: 200px;
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .qr-box:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+    }
+    .qr-box svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .qr-target-url {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.74rem;
+      color: var(--slate-500);
+      margin-bottom: 16px;
+      word-break: break-all;
+      max-width: 260px;
+      background: var(--slate-50);
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px dashed var(--slate-200);
+    }
+
+    /* BOTONES DE ACCIÓN DE LA TARJETA */
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      margin-top: auto;
+    }
+    .card-actions .btn {
+      flex: 1;
+      justify-content: center;
+      padding: 8px 10px;
+    }
+    .card-actions .btn-icon-action {
+      flex: 0 0 38px;
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--slate-900);
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* DOCUMENTACIÓN LOCAL */
+    .info-section {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      padding: 24px;
+      margin-top: 40px;
+    }
+    .info-section h4 {
+      font-size: 1.05rem;
+      color: var(--slate-900);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-section p {
+      font-size: 0.9rem;
+      color: var(--slate-600);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .code-pill {
+      background: var(--slate-100);
+      color: var(--slate-800);
+      font-family: 'JetBrains Mono', monospace;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.85rem;
+      color: var(--slate-400);
+    }
+
+    /* ESTILOS DE IMPRESIÓN (PRINT MODE) */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+      }
+      .navbar, .hero, .control-panel, .card-actions, .info-section, .custom-generator-box, .footer, .toast {
+        display: none !important;
+      }
+      .section-title-wrap {
+        margin-bottom: 16px;
+        text-align: center;
+        display: block;
+      }
+      .section-title-wrap h3 {
+        font-size: 1.5rem;
+      }
+      .count-badge {
+        display: none;
+      }
+      .members-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .member-card {
+        border: 1.5px dashed #64748b !important;
+        box-shadow: none !important;
+        transform: none !important;
+        padding: 14px 10px !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      .member-avatar {
+        width: 48px;
+        height: 48px;
+      }
+      .member-name {
+        font-size: 0.9rem;
+      }
+      .member-role {
+        font-size: 0.72rem;
+        padding: 2px 8px;
+        margin-bottom: 8px;
+        border: 1px solid #64748b;
+        color: #000;
+        background: none;
+      }
+      .qr-box {
+        width: 150px;
+        height: 150px;
+        border: 1px solid #000000;
+        padding: 4px;
+        margin-bottom: 8px;
+      }
+      .qr-target-url {
+        font-size: 0.65rem;
+        color: #222;
+        margin-bottom: 0;
+        border: none;
+        background: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>IGNIS • Registros</h1>
+          <p>Portal del Equipo & Códigos QR</p>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <button class="btn btn-outline" onclick="toggleCustomGenerator()" id="btnToggleGenerator">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Nuevo QR
+        </button>
+        <button class="btn btn-outline" onclick="window.print()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+          </svg>
+          Imprimir Fichas
+        </button>
+        <button class="btn btn-primary" onclick="downloadAllQRs()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          Descargar Todos los QR
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-container">
+      <span class="hero-badge">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        Página Principal Oficial
+      </span>
+      <h2>Códigos QR y Tarjetas Digitales</h2>
+      <p>Escanea con tu teléfono para acceder a la tarjeta de presentación de cada integrante o genera nuevos códigos QR interactivos al instante.</p>
+    </div>
+  </header>
+
+  <!-- PANEL DE CONTROL & GENERACIÓN -->
+  <div class="control-panel">
+    <div class="url-row">
+      <label class="url-label" for="baseUrlInput">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+        </svg>
+        Enlace Base Web:
+      </label>
+      <div class="url-input-wrap">
+        <input type="url" id="baseUrlInput" class="url-input" value="https://ignis-registros.vercel.app" placeholder="https://ignis-registros.vercel.app" spellcheck="false">
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="updateAllTeamQRs()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Regenerar QRs del Equipo
+      </button>
+    </div>
+
+    <div class="actions-row">
+      <div class="search-wrap">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar por nombre o rol..." oninput="filterMembers()">
+      </div>
+      <span style="font-size: 0.82rem; color: var(--slate-500);">
+        💡 Puedes cambiar la URL base en cualquier momento para generar nuevos QRs dinámicos.
+      </span>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- GENERADOR PERSONALIZADO FLOTANTE/DESPLEGABLE -->
+    <section class="custom-generator-box" id="customGeneratorBox">
+      <div class="generator-header">
+        <h3>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Generador de Códigos QR Personalizados
+        </h3>
+        <button class="btn btn-outline btn-sm" onclick="toggleCustomGenerator()">Cerrar</button>
+      </div>
+      <div class="generator-body">
+        <div>
+          <div class="form-group">
+            <label for="customInputText">Texto o Enlace para el Código QR</label>
+            <input type="text" id="customInputText" class="form-control" placeholder="Ej: https://ignis-registros.vercel.app o cualquier texto" value="https://ignis-registros.vercel.app" oninput="generateCustomQR()">
+          </div>
+          <div class="form-group">
+            <label for="customInputTitle">Nombre de Archivo al Descargar</label>
+            <input type="text" id="customInputTitle" class="form-control" placeholder="Ej: qr-mi-enlace" value="qr-ignis">
+          </div>
+          <div style="display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="downloadCustomQR('svg')">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descargar en SVG
+            </button>
+            <button class="btn btn-outline" onclick="downloadCustomQR('png')">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Descargar en PNG
+            </button>
+          </div>
+        </div>
+        <div class="custom-qr-preview">
+          <div id="customQrContainer"></div>
+          <span style="font-size: 0.75rem; color: var(--slate-500);">Generación en tiempo real</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTA DEL EQUIPO -->
+    <div class="section-title-wrap">
+      <h3>Integrantes del Equipo IGNIS</h3>
+      <span class="count-badge" id="membersCountBadge">9 Integrantes</span>
+    </div>
+
+    <div class="members-grid" id="membersGrid">
+      <!-- Se inyecta dinámicamente mediante JavaScript -->
+    </div>
+
+    <!-- DOCUMENTACIÓN / AYUDA LOCAL -->
+    <section class="info-section">
+      <h4>
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        ¿Cómo generar los archivos QR en tu computadora? (Offline)
+      </h4>
+      <p>
+        Si deseas regenerar físicamente los archivos <span class="code-pill">qrs/qr-*.svg</span> en tu repositorio local:
+      </p>
+      <ul style="margin-left: 24px; font-size: 0.88rem; color: var(--slate-600); line-height: 1.8;">
+        <li><strong>En Mac:</strong> Abre la terminal y ejecuta <span class="code-pill">python3 generar_qr.py</span> o haz doble clic a <span class="code-pill">actualizar_qrs.command</span>.</li>
+        <li><strong>En Windows:</strong> Haz doble clic a <span class="code-pill">actualizar_qrs.bat</span>.</li>
+        <li><strong>Con otra URL personalizada:</strong> Ejecuta <span class="code-pill">python3 generar_qr.py "https://ignis-registros.vercel.app"</span></li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>© IGNIS - Proyecto Escolar • Registros Digitales y Códigos QR</p>
+    </footer>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toastNotification">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+    </svg>
+    <span id="toastMessage">Mensaje</span>
+  </div>
+
+  <script>
+    /* ================================================================
+       DATOS OFICIALES DE LOS INTEGRANTES DE IGNIS
+       ================================================================ */
+    const TEAM_MEMBERS = [
+      {
+        id: 'denisse',
+        name: 'Denisse Mishell Vazquez Delfin',
+        role: 'Analista',
+        file: 'denisse.html',
+        image: 'images/denisse.svg'
+      },
+      {
+        id: 'mildred',
+        name: 'Mildred Sarai Magaña Hernandez',
+        role: 'Redactora',
+        file: 'mildred.html',
+        image: 'images/mildred.svg'
+      },
+      {
+        id: 'axel',
+        name: 'Axel Yahir Valencia Torres',
+        role: 'Historiador',
+        file: 'axel.html',
+        image: 'images/axel.svg'
+      },
+      {
+        id: 'jacobo',
+        name: 'Jacobo Salvador Martínez Hernández',
+        role: 'Dibujante',
+        file: 'jacobo.html',
+        image: 'images/jacobo.svg'
+      },
+      {
+        id: 'diego',
+        name: 'Diego Daniel Izquierdo Linares',
+        role: 'Investigador',
+        file: 'diego.html',
+        image: 'images/diego.svg'
+      },
+      {
+        id: 'ximena',
+        name: 'Ximena Guadalupe Olán Padrón',
+        role: 'Administradora',
+        file: 'ximena.html',
+        image: 'images/ximena.svg'
+      },
+      {
+        id: 'dereck',
+        name: 'Dereck Alejandro López Torres',
+        role: 'Diseñador / Dibujante',
+        file: 'dereck.html',
+        image: 'images/dereck.svg'
+      },
+      {
+        id: 'alexa',
+        name: 'Alexa Daniela Mena Cruz',
+        role: 'Redactora',
+        file: 'alexa.html',
+        image: 'images/alexa.svg'
+      },
+      {
+        id: 'jorge',
+        name: 'Jorge Alexis Ojeda Hernandez',
+        role: 'CEO',
+        file: 'jorge.html',
+        image: 'images/jorge.svg'
+      }
+    ];
+
+    /* ================================================================
+       MOTOR DE GENERACIÓN DE CÓDIGO QR EN JAVASCRIPT PURO
+       (Implementación completa de Reed-Solomon y Matriz QR)
+       ================================================================ */
+    const EXP = new Uint8Array(512);
+    const LOG = new Uint8Array(256);
+    let _x = 1;
+    for (let i = 0; i < 255; i++) {
+      EXP[i] = _x;
+      EXP[i + 255] = _x;
+      LOG[_x] = i;
+      _x = (_x << 1) ^ ((_x & 0x80) ? 0x11d : 0);
+    }
+
+    function gmult(a, b) {
+      if (a === 0 || b === 0) return 0;
+      return EXP[(LOG[a] + LOG[b]) % 255];
+    }
+
+    function rsGeneratorPoly(nsym) {
+      let g = [1];
+      for (let i = 0; i < nsym; i++) {
+        const ng = new Array(g.length + 1).fill(0);
+        const root = EXP[i];
+        for (let j = 0; j < g.length; j++) {
+          ng[j] ^= gmult(g[j], root);
+          ng[j + 1] ^= g[j];
+        }
+        g = ng;
+      }
+      return g;
+    }
+
+    function rsEncode(msg, nsym) {
+      const gen = rsGeneratorPoly(nsym);
+      const msgOut = Array.from(msg).concat(new Array(nsym).fill(0));
+      for (let i = 0; i < msg.length; i++) {
+        const coef = msgOut[i];
+        if (coef !== 0) {
+          for (let j = 1; j < gen.length; j++) {
+            msgOut[i + j] ^= gmult(gen[gen.length - 1 - j], coef);
+          }
+        }
+      }
+      return msgOut.slice(msg.length);
+    }
+
+    const TABLE_M = {
+      1: [21, 26, [[16, 10, 1]], []],
+      2: [25, 44, [[28, 16, 1]], [6, 18]],
+      3: [29, 70, [[44, 26, 1]], [6, 22]],
+      4: [33, 100, [[32, 18, 2]], [6, 26]],
+      5: [37, 134, [[43, 24, 2]], [6, 30]],
+      6: [41, 172, [[27, 16, 4]], [6, 34]]
+    };
+
+    function getFormatBits(ecBits, mask) {
+      let val = (ecBits << 3) | mask;
+      let rem = val << 10;
+      for (let i = 14; i >= 10; i--) {
+        if (rem & (1 << i)) {
+          rem ^= (0x537 << (i - 10));
+        }
+      }
+      const bits = (val << 10) | rem;
+      return bits ^ 0x5412;
+    }
+
+    function createQRMatrix(text) {
+      const rawData = new TextEncoder().encode(text);
+      const dataLen = rawData.length;
+
+      let version = null;
+      for (let v = 1; v <= 6; v++) {
+        const [size, totalCw, blocks] = TABLE_M[v];
+        const totalDataCw = blocks.reduce((sum, b) => sum + b[0] * b[2], 0);
+        if (dataLen + 3 <= totalDataCw) {
+          version = v;
+          break;
+        }
+      }
+      if (!version) {
+        throw new Error('El texto es demasiado largo para este generador (máx 130 caracteres).');
+      }
+
+      const [size, totalCw, blocks, aligns] = TABLE_M[version];
+      const totalDataCw = blocks.reduce((sum, b) => sum + b[0] * b[2], 0);
+
+      // Flujo de bits en modo Byte (0100)
+      let bits = '0100' + dataLen.toString(2).padStart(8, '0');
+      for (let i = 0; i < dataLen; i++) {
+        bits += rawData[i].toString(2).padStart(8, '0');
+      }
+      const termLen = Math.min(4, totalDataCw * 8 - bits.length);
+      if (termLen > 0) bits += '0'.repeat(termLen);
+      if (bits.length % 8 !== 0) {
+        bits += '0'.repeat(8 - (bits.length % 8));
+      }
+
+      const dataBytes = [];
+      for (let i = 0; i < bits.length; i += 8) {
+        dataBytes.push(parseInt(bits.slice(i, i + 8), 2));
+      }
+
+      let padToggle = false;
+      while (dataBytes.length < totalDataCw) {
+        dataBytes.push(padToggle ? 0x11 : 0xEC);
+        padToggle = !padToggle;
+      }
+
+      // Bloques y corrección Reed-Solomon
+      const blockData = [];
+      const blockEc = [];
+      let offset = 0;
+      for (const [dataCw, ecCw, count] of blocks) {
+        for (let c = 0; c < count; c++) {
+          const chunk = dataBytes.slice(offset, offset + dataCw);
+          offset += dataCw;
+          const ec = rsEncode(chunk, ecCw);
+          blockData.push(chunk);
+          blockEc.push(ec);
+        }
+      }
+
+      // Intercalado
+      const interleaved = [];
+      const maxDlen = Math.max(...blockData.map(b => b.length));
+      for (let i = 0; i < maxDlen; i++) {
+        for (const b of blockData) {
+          if (i < b.length) interleaved.push(b[i]);
+        }
+      }
+      const maxEclen = Math.max(...blockEc.map(b => b.length));
+      for (let i = 0; i < maxEclen; i++) {
+        for (const b of blockEc) {
+          if (i < b.length) interleaved.push(b[i]);
+        }
+      }
+
+      let finalBits = '';
+      for (const byte of interleaved) {
+        finalBits += byte.toString(2).padStart(8, '0');
+      }
+      const remBitsMap = { 1: 0, 2: 7, 3: 7, 4: 7, 5: 7, 6: 7 };
+      finalBits += '0'.repeat(remBitsMap[version]);
+
+      // Matriz
+      const matrix = Array.from({ length: size }, () => new Array(size).fill(null));
+      const reserved = Array.from({ length: size }, () => new Array(size).fill(false));
+
+      // 1. Finders
+      function setFinder(orow, ocol) {
+        for (let r = -1; r <= 7; r++) {
+          for (let c = -1; c <= 7; c++) {
+            const nr = orow + r;
+            const nc = ocol + c;
+            if (nr >= 0 && nr < size && nc >= 0 && nc < size) {
+              reserved[nr][nc] = true;
+              if (r >= 0 && r <= 6 && c >= 0 && c <= 6) {
+                if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
+                  matrix[nr][nc] = 1;
+                } else {
+                  matrix[nr][nc] = 0;
+                }
+              } else {
+                matrix[nr][nc] = 0;
+              }
+            }
+          }
+        }
+      }
+      setFinder(0, 0);
+      setFinder(0, size - 7);
+      setFinder(size - 7, 0);
+
+      // 2. Timing
+      for (let i = 0; i < size; i++) {
+        if (matrix[6][i] === null) {
+          matrix[6][i] = (i % 2 === 0) ? 1 : 0;
+          reserved[6][i] = true;
+        }
+        if (matrix[i][6] === null) {
+          matrix[i][6] = (i % 2 === 0) ? 1 : 0;
+          reserved[i][6] = true;
+        }
+      }
+
+      // 3. Alignment
+      if (aligns.length > 0) {
+        for (const ar of aligns) {
+          for (const ac of aligns) {
+            if ((ar < 9 && ac < 9) || (ar < 9 && ac >= size - 9) || (ar >= size - 9 && ac < 9)) continue;
+            for (let r = -2; r <= 2; r++) {
+              for (let c = -2; c <= 2; c++) {
+                const nr = ar + r;
+                const nc = ac + c;
+                reserved[nr][nc] = true;
+                if (r === -2 || r === 2 || c === -2 || c === 2 || (r === 0 && c === 0)) {
+                  matrix[nr][nc] = 1;
+                } else {
+                  matrix[nr][nc] = 0;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // 4. Dark module
+      matrix[size - 8][8] = 1;
+      reserved[size - 8][8] = true;
+
+      // 5. Reserva formato
+      for (let i = 0; i < 9; i++) {
+        reserved[8][i] = true;
+        reserved[i][8] = true;
+      }
+      for (let i = 0; i < 8; i++) {
+        reserved[8][size - 1 - i] = true;
+        reserved[size - 1 - i][8] = true;
+      }
+
+      // Máscaras
+      const maskFuncs = [
+        (r, c) => (r + c) % 2 === 0,
+        (r, c) => r % 2 === 0,
+        (r, c) => c % 3 === 0,
+        (r, c) => (r + c) % 3 === 0,
+        (r, c) => ((r >> 1) + Math.floor(c / 3)) % 2 === 0,
+        (r, c) => ((r * c) % 2) + ((r * c) % 3) === 0,
+        (r, c) => (((r * c) % 2) + ((r * c) % 3)) % 2 === 0,
+        (r, c) => (((r + c) % 2) + ((r * c) % 3)) % 2 === 0
+      ];
+
+      let bestGrid = null;
+      let bestScore = Infinity;
+
+      for (let maskIdx = 0; maskIdx < 8; maskIdx++) {
+        const grid = matrix.map(row => [...row]);
+        let bitIdx = 0;
+
+        let col = size - 1;
+        let up = true;
+        while (col > 0) {
+          if (col === 6) col -= 1;
+          const rowRange = up ? [...Array(size).keys()].reverse() : [...Array(size).keys()];
+          for (const r of rowRange) {
+            for (const c of [col, col - 1]) {
+              if (!reserved[r][c]) {
+                let bitVal = bitIdx < finalBits.length ? parseInt(finalBits[bitIdx], 10) : 0;
+                bitIdx++;
+                if (maskFuncs[maskIdx](r, c)) {
+                  bitVal ^= 1;
+                }
+                grid[r][c] = bitVal;
+              }
+            }
+          }
+          up = !up;
+          col -= 2;
+        }
+
+        // Formato
+        const fbits = getFormatBits(0, maskIdx); // 0 = Nivel M
+        const coordsTL = [
+          [8, 0], [8, 1], [8, 2], [8, 3], [8, 4], [8, 5],
+          [8, 7], [8, 8], [7, 8], [5, 8], [4, 8], [3, 8], [2, 8], [1, 8], [0, 8]
+        ];
+        for (let i = 0; i < coordsTL.length; i++) {
+          const [r, c] = coordsTL[i];
+          grid[r][c] = (fbits >> (14 - i)) & 1;
+        }
+        for (let i = 0; i < 7; i++) {
+          grid[size - 1 - i][8] = (fbits >> (14 - i)) & 1;
+        }
+        for (let i = 0; i < 8; i++) {
+          grid[8][size - 8 + i] = (fbits >> (7 - i)) & 1;
+        }
+
+        // Penalización
+        let score = 0;
+        for (let r = 0; r < size; r++) {
+          let runColor = null, runLen = 0;
+          for (let c = 0; c < size; c++) {
+            const v = grid[r][c];
+            if (v === runColor) runLen++;
+            else {
+              if (runLen >= 5) score += 3 + (runLen - 5);
+              runColor = v; runLen = 1;
+            }
+          }
+          if (runLen >= 5) score += 3 + (runLen - 5);
+        }
+        for (let c = 0; c < size; c++) {
+          let runColor = null, runLen = 0;
+          for (let r = 0; r < size; r++) {
+            const v = grid[r][c];
+            if (v === runColor) runLen++;
+            else {
+              if (runLen >= 5) score += 3 + (runLen - 5);
+              runColor = v; runLen = 1;
+            }
+          }
+          if (runLen >= 5) score += 3 + (runLen - 5);
+        }
+        for (let r = 0; r < size - 1; r++) {
+          for (let c = 0; c < size - 1; c++) {
+            if (grid[r][c] === grid[r+1][c] && grid[r][c] === grid[r][c+1] && grid[r][c] === grid[r+1][c+1]) {
+              score += 3;
+            }
+          }
+        }
+        let darkCount = 0;
+        for (let r = 0; r < size; r++) {
+          for (let c = 0; c < size; c++) {
+            if (grid[r][c] === 1) darkCount++;
+          }
+        }
+        const pct = Math.floor((darkCount * 100) / (size * size));
+        score += Math.floor(Math.abs(pct - 50) / 5) * 10;
+
+        if (score < bestScore) {
+          bestScore = score;
+          bestGrid = grid;
+        }
+      }
+
+      return bestGrid;
+    }
+
+    function gridToSVG(grid, border = 4, scale = 10, fg = '#0f172a', bg = '#ffffff') {
+      const size = grid.length;
+      const totalSize = (size + border * 2) * scale;
+      let rects = '';
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          if (grid[r][c] === 1) {
+            const x = (c + border) * scale;
+            const y = (r + border) * scale;
+            rects += `<rect x="${x}" y="${y}" width="${scale}" height="${scale}" fill="${fg}"/>`;
+          }
+        }
+      }
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalSize} ${totalSize}" width="${totalSize}" height="${totalSize}">
+  <rect width="${totalSize}" height="${totalSize}" fill="${bg}" rx="14"/>
+  ${rects}
+</svg>`;
+    }
+
+    /* ================================================================
+       INTERFAZ, RENDERIZADO Y DESCARGAS
+       ================================================================ */
+    let currentBaseUrl = 'https://ignis-registros.vercel.app';
+    const memberSvgCache = {};
+
+    function getCleanBaseUrl() {
+      const inputVal = document.getElementById('baseUrlInput').value.trim();
+      let url = inputVal || currentBaseUrl;
+      return url.replace(/\/+$/, '');
+    }
+
+    function renderTeamMembers() {
+      const gridContainer = document.getElementById('membersGrid');
+      gridContainer.innerHTML = '';
+      const baseUrl = getCleanBaseUrl();
+
+      TEAM_MEMBERS.forEach(member => {
+        const targetUrl = `${baseUrl}/${member.file}`;
+        
+        let svgContent = '';
+        try {
+          const matrix = createQRMatrix(targetUrl);
+          svgContent = gridToSVG(matrix, 4, 10);
+          memberSvgCache[member.id] = svgContent;
+        } catch (e) {
+          svgContent = `<div style="color: #ef4444; font-size: 0.8rem; padding: 20px;">Error al generar QR</div>`;
+        }
+
+        const card = document.createElement('article');
+        card.className = 'member-card';
+        card.id = `card-${member.id}`;
+        card.dataset.name = member.name.toLowerCase();
+        card.dataset.role = member.role.toLowerCase();
+
+        card.innerHTML = `
+          <div class="member-avatar-wrap">
+            <img src="${member.image}" alt="${member.name}" class="member-avatar" onerror="this.src='images/avatar-placeholder.svg'">
+          </div>
+          <h4 class="member-name">${member.name}</h4>
+          <span class="member-role">${member.role}</span>
+          
+          <div class="qr-box" id="qr-box-${member.id}">
+            ${svgContent}
+          </div>
+
+          <div class="qr-target-url" title="${targetUrl}">
+            ${targetUrl}
+          </div>
+
+          <div class="card-actions">
+            <a href="${member.file}" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              Ver Perfil
+            </a>
+            <button class="btn btn-outline btn-sm" onclick="downloadMemberQR('${member.id}', '${member.file.replace('.html', '')}')" title="Descargar SVG del código QR">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Descargar
+            </button>
+            <button class="btn btn-outline btn-sm btn-icon-action" onclick="copyToClipboard('${targetUrl}')" title="Copiar enlace completo">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </button>
+          </div>
+        `;
+
+        gridContainer.appendChild(card);
+      });
+
+      document.getElementById('membersCountBadge').textContent = `${TEAM_MEMBERS.length} Integrantes`;
+    }
+
+    function updateAllTeamQRs() {
+      const baseUrl = getCleanBaseUrl();
+      currentBaseUrl = baseUrl;
+      renderTeamMembers();
+      showToast(`¡Códigos QR del equipo actualizados con: ${baseUrl}!`);
+    }
+
+    function filterMembers() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      let visibleCount = 0;
+      TEAM_MEMBERS.forEach(m => {
+        const card = document.getElementById(`card-${m.id}`);
+        if (!card) return;
+        const match = card.dataset.name.includes(query) || card.dataset.role.includes(query);
+        card.style.display = match ? 'flex' : 'none';
+        if (match) visibleCount++;
+      });
+      document.getElementById('membersCountBadge').textContent = `${visibleCount} Integrantes`;
+    }
+
+    function downloadMemberQR(memberId, filename) {
+      const svg = memberSvgCache[memberId];
+      if (!svg) return;
+      downloadBlob(svg, `qr-${filename}.svg`, 'image/svg+xml');
+      showToast(`Descargando qr-${filename}.svg`);
+    }
+
+    function downloadBlob(content, filename, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadAllQRs() {
+      TEAM_MEMBERS.forEach((member, index) => {
+        setTimeout(() => {
+          downloadMemberQR(member.id, member.file.replace('.html', ''));
+        }, index * 200);
+      });
+      showToast('Descargando los 9 códigos QR del equipo...');
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(`¡Enlace copiado al portapapeles!`);
+        });
+      } else {
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showToast(`¡Enlace copiado!`);
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMessage');
+      toastMsg.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    /* GENERADOR PERSONALIZADO */
+    let currentCustomSvg = '';
+    function toggleCustomGenerator() {
+      const box = document.getElementById('customGeneratorBox');
+      box.classList.toggle('active');
+      if (box.classList.contains('active')) {
+        box.scrollIntoView({ behavior: 'smooth' });
+        generateCustomQR();
+      }
+    }
+
+    function generateCustomQR() {
+      const text = document.getElementById('customInputText').value.trim() || 'https://ignis-registros.vercel.app';
+      const container = document.getElementById('customQrContainer');
+      try {
+        const matrix = createQRMatrix(text);
+        currentCustomSvg = gridToSVG(matrix, 4, 8);
+        container.innerHTML = currentCustomSvg;
+      } catch (err) {
+        container.innerHTML = `<span style="color: #ef4444; font-size: 0.8rem;">Texto demasiado largo para este nivel</span>`;
+      }
+    }
+
+    function downloadCustomQR(format) {
+      const title = (document.getElementById('customInputTitle').value.trim() || 'codigo-qr').replace(/\s+/g, '-').toLowerCase();
+      if (format === 'svg') {
+        downloadBlob(currentCustomSvg, `${title}.svg`, 'image/svg+xml');
+        showToast(`Descargado: ${title}.svg`);
+      } else {
+        const svgBlob = new Blob([currentCustomSvg], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width || 400;
+          canvas.height = img.height || 400;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          URL.revokeObjectURL(url);
+          canvas.toBlob(blob => {
+            const pngUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = pngUrl;
+            a.download = `${title}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(pngUrl);
+            showToast(`Descargado: ${title}.png`);
+          });
+        };
+        img.src = url;
+      }
+    }
+
+    // Inicializar al cargar
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.location.origin && window.location.origin !== 'null' && !window.location.origin.startsWith('file:')) {
+        document.getElementById('baseUrlInput').value = window.location.origin;
+        currentBaseUrl = window.location.origin;
+      }
+      renderTeamMembers();
+      generateCustomQR();
+    });
+  </script>
+</body>
+</html>
