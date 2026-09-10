@@ -348,7 +348,7 @@ if __name__ == '__main__':
     base_url = base_url.rstrip("/")
     os.makedirs("qrs", exist_ok=True)
     
-    integrantes = ["denisse", "mildred", "axel", "jacobo", "diego", "ximena", "dereck", "alexa", "jorge"]
+    integrantes = ["denisse", "mildred", "axel", "jacobo", "diego", "ximena", "dereck", "alexa", "jorge", "santiago"]
     print(f"\nGenerando códigos QR con la ruta: {base_url}\n")
     
     for nombre in integrantes:
