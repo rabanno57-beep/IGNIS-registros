@@ -322,7 +322,7 @@ def qr_to_svg(grid, border=4, scale=10):
 # Puedes cambiar este enlace aquí mismo, o escribirlo cuando
 # ejecutes este programa.
 # ============================================================
-URL_BASE_POR_DEFECTO = "https://tu-proyecto.github.io"
+URL_BASE_POR_DEFECTO = "https://rabanno57-beep.github.io/IGNIS-registros"
 
 if __name__ == '__main__':
     import os
@@ -337,16 +337,18 @@ if __name__ == '__main__':
             print("        ACTUALIZADOR DE CÓDIGOS QR DEL EQUIPO")
             print("="*60)
             print(f"URL actual predeterminada: {URL_BASE_POR_DEFECTO}")
-            print("Pega aquí el enlace de tu página publicada (o presiona ENTER para usar la actual):")
-            entrada = input("Enlace web: ").strip()
-            base_url = entrada if entrada else URL_BASE_POR_DEFECTO
+            try:
+                entrada = input("Enlace web: ").strip()
+                base_url = entrada if entrada else URL_BASE_POR_DEFECTO
+            except (EOFError, KeyboardInterrupt):
+                base_url = URL_BASE_POR_DEFECTO
         else:
             base_url = URL_BASE_POR_DEFECTO
 
     base_url = base_url.rstrip("/")
     os.makedirs("qrs", exist_ok=True)
     
-    integrantes = ["denisse", "mildred", "axel", "jacobo", "diego", "ximena", "dereck"]
+    integrantes = ["denisse", "mildred", "axel", "jacobo", "diego", "ximena", "dereck", "alexa", "jorge"]
     print(f"\nGenerando códigos QR con la ruta: {base_url}\n")
     
     for nombre in integrantes:
